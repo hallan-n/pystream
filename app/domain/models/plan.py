@@ -1,6 +1,5 @@
+from domain.models.base import Id
 from pydantic import BaseModel, Field, field_validator
-
-from app.domain.models.base import Id
 
 
 class PlanCreate(BaseModel):

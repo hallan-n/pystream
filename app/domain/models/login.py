@@ -1,8 +1,7 @@
 import re
 
+from domain.models.base import CreatedAt, Id
 from pydantic import BaseModel, Field, field_validator
-
-from app.domain.models.base import CreatedAt, Id
 
 
 class LoginSignIn(BaseModel):
