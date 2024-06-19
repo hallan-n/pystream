@@ -27,4 +27,5 @@ class PlanCreate(BaseModel):
             raise Exception(f"O campo Max Profiles deve ser um valor numérico.")
 
 
-class Plan(PlanCreate, Id): ...
+class Plan(PlanCreate, Id):
+    ...

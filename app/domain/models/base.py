@@ -18,4 +18,5 @@ class CreatedAt(BaseModel):
     created_at: datetime = datetime.now()
 
 
-class Base(Id, CreatedAt): ...
+class Base(Id, CreatedAt):
+    ...

@@ -6,7 +6,6 @@ from app.domain.models.base import CreatedAt, Id
 
 
 class LoginSignIn(BaseModel):
-
     email: str
     password: str
 
@@ -29,7 +28,9 @@ class LoginSignIn(BaseModel):
         return value
 
 
-class LoginSignUp(CreatedAt): ...
+class LoginSignUp(CreatedAt):
+    ...
 
 
-class Login(LoginSignUp, Id): ...
+class Login(LoginSignUp, Id):
+    ...
