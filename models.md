@@ -1,0 +1,46 @@
+login
+    id
+    email
+    password
+    created_at
+profiles
+    id
+    login_id
+    name
+    icon
+    created_at
+plans
+    id
+    name
+    max_profiles
+login_plans
+    id(composto)
+    plans_id
+    login_id
+catalog
+    id
+    login_plans_id
+    name
+    description
+series
+    id
+    catalog_id
+    title
+    seasons
+films
+    id
+    catalog_id
+    title
+    duration
+episodes
+    id
+    series_id
+    title
+    episode
+    seasion
+    duration
+categories
+    id
+    episode_id
+    name
+    description
