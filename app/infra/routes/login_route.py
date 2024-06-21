@@ -1,6 +1,6 @@
-from domain.models.login import Login, LoginSignInUp
+from domain.models.login import LoginSignInUp
 from domain.usecases.login_usecase import LoginUseCase
-from fastapi import APIRouter, Depends, Header
+from fastapi import APIRouter, Depends
 from infra.security import Security
 
 
