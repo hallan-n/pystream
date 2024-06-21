@@ -1,15 +1,12 @@
-from sqlalchemy import (Boolean, Column, Float, ForeignKey, Integer, MetaData,
-                        String, Table)
+from sqlalchemy import Column, DateTime, Integer, MetaData, String, Table, func
 
 metadata = MetaData()
 
-user_table = Table(
-    "user",
+login_table = Table(
+    "login",
     metadata,
     Column("id", Integer, primary_key=True, autoincrement=True),
-    Column("name", String(255), nullable=False),
     Column("email", String(255), nullable=False, unique=True),
     Column("password", String(255), nullable=False),
-    Column("is_seller", Boolean, nullable=False, default=False),
-    extend_existing=True,
+    Column("created_at", DateTime, default=func.now()),
 )

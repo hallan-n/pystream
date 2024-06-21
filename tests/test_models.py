@@ -6,7 +6,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../app/
 
 from datetime import datetime
 
-from app.domain.models.login import Login, LoginSignIn, LoginSignUp
+from app.domain.models.login import Login, LoginSignInUp
 from app.domain.models.plan import Plan, PlanCreate
 from app.domain.models.profile import Profile, ProfileCreate
 
@@ -15,8 +15,7 @@ def test_login():
     assert Login(
         id=1, email="teste@teste.com", password="senha_teste", created_at=datetime.now()
     )
-    assert LoginSignUp(email="teste@teste.com", password="senha_teste")
-    assert LoginSignIn(email="teste@teste.com", password="senha_teste")
+    assert LoginSignInUp(email="teste@teste.com", password="senha_teste")
 
 
 def test_profile():

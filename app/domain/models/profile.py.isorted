@@ -1,14 +1,12 @@
-import re
-
 from domain.models.base import CreatedAt, Id
-from pydantic import BaseModel, Field, field_validator
+from pydantic import Field, field_validator
 
 
-class LoginSignInUp(BaseModel):
-    email: str
-    password: str
+class ProfileCreate(CreatedAt):
+    name: str
+    icon: str
 
-    @field_validator("email", "password", mode="before")
+    @field_validator("name", "icon", mode="before")
     def check_len(cls, value, field: Field):
         if len(value) > 255:
             raise Exception(
@@ -20,12 +18,13 @@ class LoginSignInUp(BaseModel):
             )
         return value
 
-    @field_validator("email", mode="before")
-    def check_email(cls, value):
-        if not re.match(r".+@.+\.[A-Za-z]{2,6}", value):
-            raise Exception(f"Email inválido.")
-        return value
 
+class Profile(ProfileCreate, Id):
+    login_id: int
 
-class Login(LoginSignInUp, CreatedAt, Id):
-    pass
+    @field_validator("login_id", mode="before")
+    def check_id(cls, value):
+        try:
+            return int(value)
+        except:
+            raise Exception(f"O campo Login ID deve ser um valor numérico.")
