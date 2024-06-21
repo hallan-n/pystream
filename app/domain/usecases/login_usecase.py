@@ -1,5 +1,6 @@
 from domain.models.login import Login, LoginSignInUp
 from fastapi import HTTPException, status
+from fastapi.responses import JSONResponse
 from infra.repositories.login_repository import LoginRepository
 from infra.security import Security
 
@@ -10,7 +11,8 @@ class LoginUseCase:
 
     async def sign_up(self, login: LoginSignInUp):
         login.password = Security.hashed(login.password)
-        return await self.repository.create_account(login)
+        resp = await self.repository.create_account(login)
+        return JSONResponse(content=resp, status_code=status.HTTP_201_CREATED)
 
     async def sign_in(self, login: LoginSignInUp):
         resp = await self.repository.get_account_by_login(login)
