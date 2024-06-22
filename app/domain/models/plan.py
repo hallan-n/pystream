@@ -27,4 +27,4 @@ class PlanCreate(BaseModel):
 
 
 class Plan(PlanCreate, Id):
-    ...
+    pass

@@ -36,5 +36,10 @@ class Connection:
         return self.session
 
     async def __aexit__(self, exc_type, exc_value, traceback):
-        await self.session.commit()
-        await self.session.close()
+        try:
+            await self.session.commit()
+        except Exception as e:
+            await self.session.rollback()
+            raise e
+        finally:
+            await self.session.close()

@@ -1,8 +1,8 @@
 from domain.models.base import CreatedAt, Id
-from pydantic import Field, field_validator
+from pydantic import BaseModel, Field, field_validator
 
 
-class ProfileCreate(CreatedAt):
+class ProfileUpdate(BaseModel):
     name: str
     icon: str
 
@@ -17,6 +17,10 @@ class ProfileCreate(CreatedAt):
                 f"O campo {field.field_name.capitalize()} não deve ser menor que 3 caracteres."
             )
         return value
+
+
+class ProfileCreate(ProfileUpdate, CreatedAt):
+    pass
 
 
 class Profile(ProfileCreate, Id):
