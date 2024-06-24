@@ -1,8 +1,7 @@
-from domain.models.login import Login, LoginSignInUp
 from domain.models.plan import Plan, PlanLogin
 from infra.connection import Connection
 from infra.schemas import plan_table as schema
-from sqlalchemy import insert, select, update
+from sqlalchemy import delete, insert, select, text, update
 
 
 class PlanRepository:
@@ -36,6 +35,19 @@ class PlanRepository:
                 await conn.rollback()
                 return {"success": False, "message": str(e)}
 
+    async def remove_plan(self, login_id: int):
+        async with self.conn as conn:
+            try:
+                stmt = delete(schema).where(schema.c.login_id == login_id)
+                result = await conn.execute(stmt)
+                if result.rowcount > 0:
+                    return {"success": True, "message": "Deleted Plan."}
+                else:
+                    return {"success": False, "message": "Plan not found."}
+            except Exception as e:
+                await conn.rollback()
+                return {"success": False, "message": str(e)}
+
     async def get_plan(self, id: int):
         async with self.conn as conn:
             try:
@@ -48,3 +60,15 @@ class PlanRepository:
                     return {"success": False, "message": "Plan not found."}
             except Exception as e:
                 return {"success": False, "message": str(e)}
+
+    async def has_plan(self, login_id: int):
+        async with self.conn as conn:
+            try:
+                query = text(f"SELECT 1 FROM plan WHERE login_id = {login_id};")
+                stmt = await conn.execute(query)
+                has = bool(stmt.fetchone())
+                if not has:
+                    return {"success": has, "message": "Login does not have a plan."}
+                return {"success": has, "message": "Login already has a plan."}
+            except Exception as e:
+                return {"message": "Error when executing the action."}

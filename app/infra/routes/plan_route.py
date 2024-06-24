@@ -14,6 +14,7 @@ class PlanRouter(APIRouter):
         self.add_api_route("/add", self.add_plan, methods=["POST"])
         self.add_api_route("/att", self.update_plan, methods=["POST"])
         self.add_api_route("/get", self.get_plan, methods=["GET"])
+        self.add_api_route("/del", self.remove_plan, methods=["DELETE"])
 
     async def add_plan(
         self, plan: PlanCreate, token: dict = Depends(Security.decode_token)
@@ -30,6 +31,14 @@ class PlanRouter(APIRouter):
         return await self.usecase.update_plan(
             PlanLogin(**plan.model_dump(), login_id=token["id"])
         )
+
+    async def get_plan(self, token: dict = Depends(Security.decode_token)):
+        """Pega as informações do plano."""
+        return await self.usecase.get_plan(token["id"])
+
+    async def remove_plan(self, token: dict = Depends(Security.decode_token)):
+        """Remove um plano."""
+        return await self.usecase.remove_plan(login_id=token["id"])
 
     async def get_plan(self, token: dict = Depends(Security.decode_token)):
         """Pega as informações do plano."""

@@ -1,7 +1,7 @@
 from domain.models.login import Login, LoginSignInUp
 from infra.connection import Connection
 from infra.schemas import login_table as schema
-from sqlalchemy import and_, insert, select, update
+from sqlalchemy import insert, select, update
 
 
 class LoginRepository:
