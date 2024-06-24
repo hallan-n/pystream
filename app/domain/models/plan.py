@@ -26,5 +26,16 @@ class PlanCreate(BaseModel):
             raise Exception(f"O campo Max Profiles deve ser um valor numérico.")
 
 
-class Plan(PlanCreate, Id):
+class PlanLogin(PlanCreate):
+    login_id: int
+
+    @field_validator("login_id", mode="before")
+    def check_id(cls, value):
+        try:
+            return int(value)
+        except:
+            raise Exception(f"O campo Login id deve ser um valor numérico.")
+
+
+class Plan(PlanLogin, Id):
     pass

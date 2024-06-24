@@ -1,4 +1,5 @@
-from sqlalchemy import Column, DateTime, Integer, MetaData, String, Table, func
+from sqlalchemy import (Column, DateTime, ForeignKey, Integer, MetaData,
+                        String, Table, func)
 
 metadata = MetaData()
 
@@ -16,4 +17,5 @@ plan_table = Table(
     Column("id", Integer, primary_key=True, autoincrement=True),
     Column("name", String(255), nullable=False),
     Column("max_profiles", Integer, nullable=False),
+    Column("login_id", Integer, ForeignKey("login.id"), unique=True, nullable=False),
 )

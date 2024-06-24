@@ -24,5 +24,5 @@ def test_profile():
 
 
 def test_plan():
-    assert Plan(id=1, max_profiles=3, name="teste")
+    assert Plan(id=1, max_profiles=3, name="teste", login_id=1)
     assert PlanCreate(max_profiles=3, name="teste")
