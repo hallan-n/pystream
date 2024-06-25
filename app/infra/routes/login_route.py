@@ -12,7 +12,7 @@ class LoginRouter(APIRouter):
 
     def _setup(self):
         self.add_api_route("/in/", self.sign_in, methods=["POST"])
-        self.add_api_route("/up/", self.sign_up, methods=["POST"])
+        self.add_api_route("/up/", self.sign_up, methods=["PUT"])
         self.add_api_route("/out/", self.sign_out, methods=["POST"])
         self.add_api_route("/get/", self.get_login, methods=["GET"])
 

@@ -12,7 +12,7 @@ class PlanRouter(APIRouter):
 
     def _setup(self):
         self.add_api_route("/add", self.add_plan, methods=["POST"])
-        self.add_api_route("/att", self.update_plan, methods=["POST"])
+        self.add_api_route("/att", self.update_plan, methods=["PUT"])
         self.add_api_route("/get", self.get_plan, methods=["GET"])
         self.add_api_route("/del", self.remove_plan, methods=["DELETE"])
 

@@ -9,14 +9,22 @@ profiles
     name
     icon
     created_at
+
+    create_profile - Ok
+    update_profile
+    get_all_profiles
+    get_profile
+    delete_profiles
+
+
 plans
     id
     name
     max_profiles
-login_plans
-    id(composto)
-    plans_id
     login_id
+
+
+
 catalog
     id
     login_plans_id

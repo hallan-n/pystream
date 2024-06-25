@@ -1,8 +1,8 @@
-from domain.models.base import CreatedAt, Id
+from domain.models.base import Base, Id
 from pydantic import BaseModel, Field, field_validator
 
 
-class ProfileUpdate(BaseModel):
+class ProfileCreate(BaseModel):
     name: str
     icon: str
 
@@ -19,16 +19,24 @@ class ProfileUpdate(BaseModel):
         return value
 
 
-class ProfileCreate(ProfileUpdate, CreatedAt):
-    pass
-
-
-class Profile(ProfileCreate, Id):
+class ProfileLogin(ProfileCreate):
     login_id: int
 
     @field_validator("login_id", mode="before")
-    def check_id(cls, value):
+    def check_login_id(cls, value):
         try:
             return int(value)
         except:
             raise Exception(f"O campo Login ID deve ser um valor numérico.")
+
+
+class ProfileUpdate(ProfileCreate, Id):
+    pass
+
+
+class ProfileLoginUpdate(ProfileLogin, Id):
+    pass
+
+
+class Profile(ProfileLogin, Base):
+    pass

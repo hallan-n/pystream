@@ -15,8 +15,12 @@ class Id(BaseModel):
 
 
 class CreatedAt(BaseModel):
-    created_at: datetime = datetime.now()
+    created_at: datetime = None
 
 
-class Base(Id, CreatedAt):
+class UpdatedAt(BaseModel):
+    updated_at: datetime = None
+
+
+class Base(Id, CreatedAt, UpdatedAt):
     ...

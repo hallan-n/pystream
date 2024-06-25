@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field, field_validator
 
 class PlanCreate(BaseModel):
     name: str
-    max_profiles: int
+    max_profiles: int = 1
 
     @field_validator("name", mode="before")
     def check_len(cls, value, field: Field):
@@ -19,8 +19,10 @@ class PlanCreate(BaseModel):
         return value
 
     @field_validator("max_profiles", mode="before")
-    def check_id(cls, value):
+    def check_max_profiles(cls, value):
         try:
+            if value < 1:
+                raise Exception(f"O campo Max Profiles deve ser maior que 0.")
             return int(value)
         except:
             raise Exception(f"O campo Max Profiles deve ser um valor numérico.")

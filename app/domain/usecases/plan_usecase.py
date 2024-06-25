@@ -1,5 +1,5 @@
 from domain.models.plan import Plan, PlanLogin
-from fastapi import status
+from fastapi import HTTPException, status
 from fastapi.responses import JSONResponse
 from infra.repositories.plan_repository import PlanRepository
 
@@ -38,16 +38,15 @@ class PlanUseCase:
         current_plan = await self.repository.get_plan(plan.login_id)
 
         if not current_plan["success"]:
-            return JSONResponse(
-                content=current_plan["message"], status_code=status.HTTP_400_BAD_REQUEST
+            raise HTTPException(
+                detail=current_plan["message"], status_code=status.HTTP_400_BAD_REQUEST
             )
 
         resp = await self.repository.update_plan(
             Plan(**plan.model_dump(), id=current_plan["data"].id)
         )
 
-        json_resp = JSONResponse(content=resp, status_code=status.HTTP_200_OK)
-        return json_resp
+        return JSONResponse(content=resp, status_code=status.HTTP_200_OK)
 
     async def get_plan(self, login_id: int):
         resp = await self.repository.get_plan(login_id)
