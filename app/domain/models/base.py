@@ -1,17 +1,10 @@
 from datetime import datetime
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, Field
 
 
 class Id(BaseModel):
-    id: int
-
-    @field_validator("id", mode="before")
-    def check_id(cls, value):
-        try:
-            return int(value)
-        except:
-            raise Exception(f"O campo ID deve ser um valor numérico.")
+    id: int = Field(gt=0)
 
 
 class CreatedAt(BaseModel):

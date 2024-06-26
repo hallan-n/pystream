@@ -1,5 +1,5 @@
 from domain.models.base import Id
-from domain.models.profile import (Profile, ProfileCreate, ProfileLogin,
+from domain.models.profile import (ProfileCreate, ProfileLogin,
                                    ProfileLoginUpdate, ProfileUpdate)
 from domain.usecases.profile_usecase import ProfileUseCase
 from fastapi import APIRouter, Depends
