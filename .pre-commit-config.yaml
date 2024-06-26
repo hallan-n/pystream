@@ -22,3 +22,11 @@ repos:
       language: system
       entry: bash -c 'isort app/ && git add app/'
       stages: [commit]
+
+-   repo: local
+    hooks:
+    - id: addall
+      name: addall
+      language: system
+      entry: bash -c 'git add app/'
+      stages: [commit]
