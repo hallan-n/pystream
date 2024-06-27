@@ -21,18 +21,23 @@ class ProfileRepository:
     async def exceeds_max_profiles(self, login_id: int):
         async with self.conn as conn:
             try:
-                # Juntar as duas querys
                 query = text(
-                    f"SELECT count(id), max_profiles FROM plan WHERE login_id = {login_id};"
+                    f"""
+                        SELECT p.max_profiles,
+                        COALESCE(COUNT(pr.id), 0)
+                        FROM plan p
+                        LEFT JOIN profile pr
+                        ON p.login_id = pr.login_id
+                        WHERE p.login_id = {login_id}
+                        GROUP BY p.max_profiles;
+                    """
                 )
                 stmt = await conn.execute(query)
+                result = stmt.fetchall()[0]
 
-                max_profiles = stmt.fetchone()[0]
-                query = text(
-                    f"SELECT count(id) FROM profile WHERE login_id = {login_id};"
-                )
-                stmt = await conn.execute(query)
-                profiles = stmt.fetchone()[0]
+                max_profiles = result[0]
+                profiles = result[1]
+
                 exceeds = profiles >= max_profiles
                 if exceeds:
                     return {
