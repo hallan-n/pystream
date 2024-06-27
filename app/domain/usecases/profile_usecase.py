@@ -9,7 +9,19 @@ class ProfileUseCase:
         self.repository = ProfileRepository()
 
     async def create_profile(self, profile: ProfileLogin):
+        can_create = await self.repository.can_create_profile(profile.login_id)
+        if not can_create["success"]:
+            raise HTTPException(
+                detail=can_create["message"], status_code=status.HTTP_400_BAD_REQUEST
+            )
+
         exceeds = await self.repository.exceeds_max_profiles(profile.login_id)
+
+        if exceeds["success"]:
+            raise HTTPException(
+                detail=exceeds["message"], status_code=status.HTTP_403_FORBIDDEN
+            )
+
         if exceeds["success"]:
             raise HTTPException(
                 detail=exceeds["message"], status_code=status.HTTP_403_FORBIDDEN

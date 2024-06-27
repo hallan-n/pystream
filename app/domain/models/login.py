@@ -1,6 +1,4 @@
-import re
-
-from domain.models.base import CreatedAt, Id
+from domain.models.base import CreatedAt, Id, UpdatedAt
 from pydantic import BaseModel, EmailStr, Field
 
 
@@ -9,5 +7,9 @@ class LoginSignInUp(BaseModel):
     password: str = Field(min_length=3, max_length=255)
 
 
-class Login(LoginSignInUp, CreatedAt, Id):
+class LoginUpdate(LoginSignInUp, Id):
+    pass
+
+
+class Login(LoginUpdate, CreatedAt, UpdatedAt):
     pass

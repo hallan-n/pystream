@@ -10,6 +10,7 @@ login_table = Table(
     Column("email", String(255), nullable=False, unique=True),
     Column("password", String(255), nullable=False),
     Column("created_at", DateTime, default=func.now()),
+    Column("update_at", DateTime, default=func.now(), onupdate=func.now()),
 )
 plan_table = Table(
     "plan",

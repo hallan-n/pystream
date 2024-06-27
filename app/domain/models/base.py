@@ -12,8 +12,8 @@ class CreatedAt(BaseModel):
 
 
 class UpdatedAt(BaseModel):
-    updated_at: datetime = None
+    update_at: datetime = None
 
 
 class Base(Id, CreatedAt, UpdatedAt):
-    ...
+    pass

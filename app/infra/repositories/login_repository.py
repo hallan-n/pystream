@@ -1,4 +1,4 @@
-from domain.models.login import Login, LoginSignInUp
+from domain.models.login import Login, LoginSignInUp, LoginUpdate
 from infra.connection import Connection
 from infra.schemas import login_table as schema
 from sqlalchemy import insert, select, update
@@ -18,7 +18,7 @@ class LoginRepository:
                 await conn.rollback()
                 return {"success": False, "message": str(e)}
 
-    async def update_account(self, login: Login):
+    async def update_account(self, login: LoginUpdate):
         async with self.conn as conn:
             try:
                 stmt = (

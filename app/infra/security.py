@@ -40,15 +40,15 @@ class Security:
     @classmethod
     def decode_token(self, token: str = Header(...)):
         try:
-            if Cache.has("blacklist", token):
+            payload = jwt.decode(
+                token, getenv("SECRET_KEY"), algorithms=getenv("ALGORITHM")
+            )
+            if Cache.has("blacklist", str(payload)):
                 raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED,
                     detail="Token incorreto ou expirado.",
                     headers={"WWW-Authenticate": "Bearer"},
                 )
-            payload = jwt.decode(
-                token, getenv("SECRET_KEY"), algorithms=getenv("ALGORITHM")
-            )
             return payload
         except JWTError:
             raise HTTPException(

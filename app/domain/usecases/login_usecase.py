@@ -1,4 +1,4 @@
-from domain.models.login import Login, LoginSignInUp
+from domain.models.login import Login, LoginSignInUp, LoginUpdate
 from fastapi import HTTPException, status
 from fastapi.responses import JSONResponse
 from infra.repositories.login_repository import LoginRepository
@@ -13,6 +13,11 @@ class LoginUseCase:
         login.password = Security.hashed(login.password)
         resp = await self.repository.create_account(login)
         return JSONResponse(content=resp, status_code=status.HTTP_201_CREATED)
+
+    async def update_login(self, login: LoginUpdate):
+        login.password = Security.hashed(login.password)
+        resp = await self.repository.update_account(login)
+        return JSONResponse(content=resp, status_code=status.HTTP_200_OK)
 
     async def sign_in(self, login: LoginSignInUp):
         resp = await self.repository.get_account_by_login(login)
@@ -43,5 +48,9 @@ class LoginUseCase:
         data = resp["data"].model_dump()
         return Login(**data)
 
-    async def sign_out(self, token: dict):
-        Security.revoke_access_token(token)
+    async def sign_out(self, token: str):
+        try:
+            Security.revoke_access_token(token)
+            return {"success": True, "message": "Logout completed."}
+        except Exception as e:
+            return {"success": False, "message": e}

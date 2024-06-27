@@ -21,18 +21,19 @@ class ProfileRepository:
     async def exceeds_max_profiles(self, login_id: int):
         async with self.conn as conn:
             try:
+                # Juntar as duas querys
                 query = text(
-                    f"SELECT max_profiles FROM plan WHERE login_id = {login_id};"
+                    f"SELECT count(id), max_profiles FROM plan WHERE login_id = {login_id};"
                 )
                 stmt = await conn.execute(query)
-                max_profiles = stmt.fetchone()[0]
 
+                max_profiles = stmt.fetchone()[0]
                 query = text(
                     f"SELECT count(id) FROM profile WHERE login_id = {login_id};"
                 )
                 stmt = await conn.execute(query)
                 profiles = stmt.fetchone()[0]
-                exceeds = profiles > max_profiles
+                exceeds = profiles >= max_profiles
                 if exceeds:
                     return {
                         "success": exceeds,
@@ -108,3 +109,15 @@ class ProfileRepository:
             except Exception as e:
                 await conn.rollback()
                 return {"success": False, "message": str(e)}
+
+    async def can_create_profile(self, login_id: int):
+        async with self.conn as conn:
+            try:
+                query = text(f"SELECT 1 FROM plan WHERE login_id = {login_id};")
+                stmt = await conn.execute(query)
+                can = bool(stmt.fetchone())
+                if not can:
+                    return {"success": False, "message": "Login does not .have a plan."}
+                return {"success": True, "message": "You can create profile."}
+            except Exception as e:
+                return {"message": "Error when executing the action."}
